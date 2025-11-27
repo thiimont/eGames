@@ -1,0 +1,35 @@
+{% extends "template.html" %}
+{% load django_bootstrap5 %}
+
+{% block titulo %} Finalizar Pedido {% endblock %}
+
+{% block conteudo %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Finalizar Pedido</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h3>{{produto.nome}}</h3>
+                
+                <img src="/media/{{produto.foto}}" width="200px" class="img-fluid mb-3" alt="{{produto.nome}}">
+                
+                <p class="mb-3">{{produto.descricao}}</p>
+                
+                <h4 class="text-success fw-bold">R${{produto.preco}}</h4>
+            </div>
+            
+            <div class="col-md-6">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="quantidade" class="form-label">Quantidade</label>
+                        <input type="number" class="form-control" id="quantidade" name="quantidade" value="1" min="1" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg w-100">Finalizar Pedido</button>
+                </form>
+                {% bootstrap_messages %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
