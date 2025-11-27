@@ -65,7 +65,7 @@ def compra(request, id_produto):
 
     if request.POST:
         quantidade = int(request.POST.get('quantidade', 1))
-        if quantidade >= 1:
+        if quantidade >= 1 and produto.estoque - quantidade >= 0:
             total = produto.preco * quantidade
             Pedido.objects.create(
                 usuario=request.user,
@@ -76,7 +76,6 @@ def compra(request, id_produto):
 
             produto.estoque -= quantidade
             produto.save()
-            messages.success(request, 'Pedido realizado com sucesso!')
             return redirect('perfil')
         else:
             messages.error(request, 'Erro ao realizar o pedido')
