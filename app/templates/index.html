@@ -1,0 +1,86 @@
+{% extends "template.html" %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block titulo %} Home {% endblock %}
+
+{% block conteudo %}
+    <style>
+        .produto-img-pequena {
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
+            padding: 15px;
+        }
+    </style>
+    
+    <section id="home" class="bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mx-auto text-center">
+                    <h1>Bem-vindo a {{info.nome_do_site}}</h1>
+                    <p class="lead">{{info.texto_chamada}}</p>
+                    <a href="{% url 'cadastro' %}"><button class="btn btn-success btn-lg">Cadastre-se</button></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre" class="py-5">
+        <div class="container">
+            <h2 class="mb-4">Sobre Nós</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="/media/{{info.imagem_sobre}}" class="img-fluid" alt="Sobre Nós">
+                </div>
+                <div class="col-md-6">
+                    <p>{{info.texto_sobre}}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="produtos" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="mb-4">Produtos</h2>
+            <div class="row">
+
+                {% for prod in produtos %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="/media/{{prod.foto}}" class="card-img-top produto-img-pequena" alt="{{prod.nome}}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{prod.nome}}</h5>
+                                <p class="card-text">{{prod.descricao}}</p>
+                                <p class="text-success fw-bold">R$ {{prod.preco}}</p>
+                                <a href="{% url 'compra' prod.id %}"><button class="btn btn-primary">Comprar</button></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contato" class="py-5">
+        <div class="container">
+            <h2 class="mb-4">Contato</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        {% bootstrap_button "Enviar" button_type="submit" button_class="btn-primary" %}
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <iframe src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q={{info.endereco}}&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <p><strong>Endereço:</strong> {{info.endereco}}</p>
+            <p><strong>Email:</strong> {{info.email}}</p>
+            <p><strong>WhatsApp:</strong> {{info.whatsapp}}</p>
+        </div>
+    </section>
+{% endblock %}
